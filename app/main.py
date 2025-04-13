@@ -23,8 +23,6 @@ async def predict(data: TransactionInput):
 
 
 
-
-
 @app.post("/login")
 def login(data: LoginData):
     user = authenticate_user(data.username, data.password)
