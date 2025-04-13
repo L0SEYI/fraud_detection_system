@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 from app.models.request import TransactionInput
 from app.services.predictor import predict_transaction
-from app.routers import auth
-from app.auth import get_current_user
+
 
 
 app = FastAPI(
