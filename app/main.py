@@ -1,5 +1,14 @@
 from fastapi import FastAPI
-from app.api.v1.endpoints import router
+from app.models.request import TransactionInput
+from app.services.predictor import predict_transaction
 
-app = FastAPI()
-app.include_router(router, prefix="/api/v1")
+app = FastAPI(
+    title="Fraud Detection API",
+    description="API for real-time fraud prediction using machine learning",
+    version="1.0.0"
+)
+
+@app.post("/predict", tags=["Fraud Detection"])
+async def predict(data: TransactionInput):
+    prediction = predict_transaction(data)
+    return prediction
