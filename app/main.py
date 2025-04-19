@@ -4,6 +4,8 @@ from app.services.predictor import predict_transaction
 from app.auth.auth_handler import create_access_token
 from app.auth.users import authenticate_user
 from pydantic import BaseModel
+from app.auth.auth_bearer import JWTBearer
+
 
 class LoginData(BaseModel):
     username: str
@@ -16,7 +18,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-@app.post("/predict", tags=["Fraud Detection"])
+@app.post("/predict", tags=["Fraud Detection"], dependencies=[Depends(JWTBearer())])
 async def predict(data: TransactionInput):
     prediction = predict_transaction(data)
     return prediction
@@ -30,3 +32,4 @@ def login(data: LoginData):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     token = create_access_token({"sub": user["username"]})
     return {"access_token": token, "token_type": "bearer"}
+
